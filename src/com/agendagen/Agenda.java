@@ -61,11 +61,11 @@ public class Agenda {
      */
     public void modificarTelefono(String nombre, String apellido, String numero) {
         try {
-            Contacto c = buscarContacto(nombre, apellido, numero);
-            c.setTelefono(numero);
-            System.out.println("Teléfono actualizado correctamente.");
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Contacto buscar = this.buscarContacto(nombre, apellido, "");
+            contactos.get(contactos.indexOf(buscar)).setTelefono(numero);
+            System.out.println("Teléfono actualizado correctamente");
+        } catch(Exception ex) {
+            System.err.println("No se encontro tal contacto a modificar");
         }
     }
 
@@ -151,9 +151,15 @@ public class Agenda {
      * @return
      */
     public boolean eliminarContacto(Contacto contacto) {
-        boolean eliminado = contactos.remove(contacto);
-        System.out.println(eliminado ? "Contacto eliminado." : "El contacto no existe.");
-        return eliminado;
+        try {
+            Contacto buscar = this.buscarContacto(contacto.getNombre(), contacto.getApellido(), contacto.getTelefono());
+            contactos.remove(buscar);
+            System.out.println("Se elimino correctamente el contacto");
+            return true;
+        } catch(Exception ex) {
+            System.err.println("No se encontro tal contacto para eliminar");
+        }
+        return false;
     }
 
     /**
