@@ -168,6 +168,7 @@ public class Agenda {
      *
      * @return
      */
+
     public boolean agendaLlena() {
         return contactos.size() >= tamanoMaximo;
     }
