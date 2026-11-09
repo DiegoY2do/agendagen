@@ -1,7 +1,9 @@
 package com.agendagen;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Scanner;
 
 public class Agenda {
     private final List<Contacto> contactos;
@@ -55,7 +57,20 @@ public class Agenda {
      * No devuelve nada.
      */
     public void listarContactos() {
-        return ;
+        if (contactos.isEmpty()) {
+            System.out.println("La agenda está vacía.");
+            return;
+        }
+
+        List<Contacto> ordenados = new ArrayList<>(contactos);
+        ordenados.sort(
+                Comparator.comparing(Contacto::getNombre, String.CASE_INSENSITIVE_ORDER)
+                        .thenComparing(Contacto::getApellido, String.CASE_INSENSITIVE_ORDER)
+        );
+
+        for (Contacto c : ordenados) {
+            System.out.println(c.getNombre() + " " + c.getApellido() + " - " + c.getTelefono());
+        }
     }
 
     /**
@@ -68,8 +83,34 @@ public class Agenda {
      * @param number
      * @return
      */
+
     public Contacto buscarContacto(String nombre, String apellido, String number) throws Exception {
-        return new Contacto("nombre", "apellido", "numero");
+        for (Contacto c : contactos) {
+            if (c.getNombre().equalsIgnoreCase(nombre)
+                    && c.getApellido().equalsIgnoreCase(apellido)) {
+                return c;
+            }
+        }
+        throw new Exception("No se ha encontrado el contacto: " + nombre + " " + apellido);
+    }
+
+    public Contacto buscarContacto() throws Exception {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Nombre a buscar: ");
+        String nombre = sc.nextLine();
+        System.out.print("Apellido a buscar: ");
+        String apellido = sc.nextLine();
+
+        Contacto c = buscarContacto(nombre, apellido, "");
+
+        System.out.println("\n");
+
+        System.out.println("Contacto encontrado:");
+        System.out.println("Nombre: " + c.getNombre());
+        System.out.println("Apellido: " + c.getApellido());
+        System.out.println("Teléfono: " + c.getTelefono());
+        return c;
     }
 
     /**
