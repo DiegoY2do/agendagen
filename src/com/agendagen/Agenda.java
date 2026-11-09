@@ -14,42 +14,71 @@ public class Agenda {
         contactos = new ArrayList<>(tamanoMaximo);
     }
 
+    public Agenda() {
+        this(10);
+    }
+
 
     /**
      * Metodo para agregar un contacto.
      * Recibe un Objeto Contacto y no devuelve nada.
      * Asegurarse de que no se sobrepase el límite (tamanoMaximo)
-     * 
+     *
      * @param contacto
      */
     public void agregarContacto(Contacto contacto) {
+        if (agendaLlena()) {
+            System.out.println("La agenda está llena, no se pueden añadir más contactos.");
+            return;
+        }
+
+        if (contacto == null
+                || contacto.getNombre() == null || contacto.getNombre().trim().isEmpty()
+                || contacto.getApellido() == null || contacto.getApellido().trim().isEmpty()) {
+            System.out.println("El nombre y el apellido no pueden estar vacíos.");
+            return;
+        }
+
+        if (existeContacto(contacto)) {
+            System.out.println("El contacto " + contacto.getNombre() + " "
+                    + contacto.getApellido() + " ya existe en la agenda.");
+            return;
+        }
+
         contactos.add(contacto);
+
     }
 
     /**
      * Metodo para modificar el numero de un contacto
      * Recibe el nombre, apellido del contacto a modificarle el y numero.
      * No devuelve nada, Si quieren, imprimir en consola que todo bien.
-     * Assegurase de numero válido. 
-     * 
+     * Assegurase de numero válido.
+     *
      * @param nombre
      * @param apellido
      * @param numero
      */
     public void modificarTelefono(String nombre, String apellido, String numero) {
-        return ;
+        try {
+            Contacto buscar = this.buscarContacto(nombre, apellido, "");
+            contactos.get(contactos.indexOf(buscar)).setTelefono(numero);
+            System.out.println("Teléfono actualizado correctamente");
+        } catch(Exception ex) {
+            System.err.println("No se encontro tal contacto a modificar");
+        }
     }
 
     /**
      * Metodo para verificar la existencia de un contacto
      * Recibe un objeto Contacto y determina si está en la lista de contactos
      * Devuelve true si sí está, false si no.
-     * 
+     *
      * @param contacto
      * @return
      */
     public boolean existeContacto(Contacto contacto) {
-        return false;
+        return contactos.contains(contacto);
     }
 
     /**
@@ -77,7 +106,7 @@ public class Agenda {
      * Metodo para buscar un contacto especifico.
      * Recibe cono cadenas el nombre, el apellido y el numero.
      * Devuelve el contacto si es que existe, si no dice que no (puede lanzar una excepción)
-     * 
+     *
      * @param nombre
      * @param apellido
      * @param number
@@ -117,21 +146,33 @@ public class Agenda {
      * Metodo para eliminar un contacto
      * Recibe un objeto Contacto trata de eliminarlo de la agenda si si esta
      * Devuelve true si lo elimino y false si no.
-     * 
+     *
      * @param contacto
      * @return
      */
     public boolean eliminarContacto(Contacto contacto) {
+        try {
+            Contacto buscar = this.buscarContacto(contacto.getNombre(), contacto.getApellido(), contacto.getTelefono());
+            contactos.remove(buscar);
+            System.out.println("Se elimino correctamente el contacto");
+            return true;
+        } catch(Exception ex) {
+            System.err.println("No se encontro tal contacto para eliminar");
+        }
         return false;
     }
 
     /**
      * Indica si la agenda ya está llena. (tamanoMaximo)
      * Devuelve true si lo esta y false si no.
-     * 
+     *
      * @return
      */
     public boolean agendaLlena() {
-        return false;
+        return contactos.size() >= tamanoMaximo;
+    }
+
+    public int espaciosLibres() {
+        return tamanoMaximo - contactos.size();
     }
 }

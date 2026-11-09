@@ -36,6 +36,7 @@ public class Main {
             System.out.println("\n");
             switch (opcion) {
                 case 1:
+<<<<<<< HEAD
                     System.out.print("Ingrese nombre: ");
                     String nAdd = sc.nextLine();
                     System.out.print("Ingrese apellido: ");
@@ -55,6 +56,13 @@ public class Main {
                     } else {
                         System.out.println("👉 El contacto NO existe en la agenda.");
                     }
+=======
+                    agenda.agregarContacto(pedirContacto(sc, true));
+                    break;
+                case 2:
+                    System.out.println(agenda.existeContacto(pedirContacto(sc, false))
+                            ? "El contacto existe." : "El contacto no existe.");
+>>>>>>> ffa5f0837423c143f5091f5446127cc3c463041a
                     break;
                 case 3:
                     agenda.listarContactos();
@@ -67,6 +75,7 @@ public class Main {
                     }
                     break;
                 case 5:
+<<<<<<< HEAD
                     System.out.print("Nombre del contacto a eliminar: ");
                     String nDel = sc.nextLine();
                     System.out.print("Apellido del contacto a eliminar: ");
@@ -93,6 +102,21 @@ public class Main {
                 case 8:
                     agenda.espaciosLibres();
                     break;
+=======
+                    agenda.eliminarContacto(pedirContacto(sc, false));
+                    break;
+                case 6:
+                    System.out.println("Ingresa nombre, apellido y el NUEVO teléfono.");
+                    Contacto datos = pedirContacto(sc, true);
+                    agenda.modificarTelefono(datos.getNombre(), datos.getApellido(), datos.getTelefono());
+                    break;
+                case 7:
+                    System.out.println(agenda.agendaLlena()
+                            ? "La agenda está llena." : "La agenda aún tiene espacio.");
+                    break;
+                case 8:
+                    System.out.println("Espacios libres: " + agenda.espaciosLibres());
+>>>>>>> ffa5f0837423c143f5091f5446127cc3c463041a
                     break;
                 case 0:
                     System.out.println("Hasta luego.");
@@ -103,5 +127,18 @@ public class Main {
         } while (opcion != 0);
 
         sc.close();
+    }
+
+    private static Contacto pedirContacto(Scanner sc, boolean conTelefono) {
+        System.out.print("Nombre: ");
+        String nombre = sc.nextLine();
+        System.out.print("Apellido: ");
+        String apellido = sc.nextLine();
+        String telefono = "";
+        if (conTelefono) {
+            System.out.print("Teléfono: ");
+            telefono = sc.nextLine();
+        }
+        return new Contacto(nombre, apellido, telefono);
     }
 }

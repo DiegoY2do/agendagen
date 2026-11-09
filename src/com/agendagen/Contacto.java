@@ -1,10 +1,12 @@
 package com.agendagen;
 
+import java.util.Objects;
+
 public class Contacto {
 
-    String nombre;
-    String apellido;
-    String numero;
+    private String nombre;
+    private String apellido;
+    private String numero;
 
     public Contacto(String nombre, String apellido, String numero) {
         this.nombre = nombre;
@@ -14,7 +16,7 @@ public class Contacto {
 
     /**
      * Método que obtiene el nombre
-     * 
+     *
      * @return
      */
     public String getNombre() {
@@ -23,7 +25,7 @@ public class Contacto {
 
     /**
      * Método que obtiene el apellido
-     * 
+     *
      * @return
      */
     public String getApellido() {
@@ -32,7 +34,7 @@ public class Contacto {
 
     /**
      * Método que obtiene el telefono
-     * 
+     *
      * @return
      */
     public String getTelefono() {
@@ -58,6 +60,25 @@ public class Contacto {
      */
     public void setTelefono(String numero) {
         this.numero = numero;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Contacto)) return false;
+        Contacto otro = (Contacto) o;
+        return nombre.equalsIgnoreCase(otro.nombre)
+                && apellido.equalsIgnoreCase(otro.apellido);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nombre.toLowerCase(), apellido.toLowerCase());
+    }
+
+    @Override
+    public String toString() {
+        return nombre + " " + apellido + " - Tel: " + numero;
     }
 
 }
