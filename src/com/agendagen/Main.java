@@ -36,8 +36,11 @@ public class Main {
             System.out.println("\n");
             switch (opcion) {
                 case 1:
+                    agenda.agregarContacto(pedirContacto(sc, true));
                     break;
                 case 2:
+                    System.out.println(agenda.existeContacto(pedirContacto(sc, false))
+                            ? "El contacto existe." : "El contacto no existe.");
                     break;
                 case 3:
                     agenda.listarContactos();
@@ -50,12 +53,19 @@ public class Main {
                     }
                     break;
                 case 5:
+                    agenda.eliminarContacto(pedirContacto(sc, false));
                     break;
                 case 6:
+                    System.out.println("Ingresa nombre, apellido y el NUEVO teléfono.");
+                    Contacto datos = pedirContacto(sc, true);
+                    agenda.modificarTelefono(datos.getNombre(), datos.getApellido(), datos.getTelefono());
                     break;
                 case 7:
+                    System.out.println(agenda.agendaLlena()
+                            ? "La agenda está llena." : "La agenda aún tiene espacio.");
                     break;
                 case 8:
+                    System.out.println("Espacios libres: " + agenda.espaciosLibres());
                     break;
                 case 0:
                     System.out.println("Hasta luego.");
@@ -66,5 +76,18 @@ public class Main {
         } while (opcion != 0);
 
         sc.close();
+    }
+
+    private static Contacto pedirContacto(Scanner sc, boolean conTelefono) {
+        System.out.print("Nombre: ");
+        String nombre = sc.nextLine();
+        System.out.print("Apellido: ");
+        String apellido = sc.nextLine();
+        String telefono = "";
+        if (conTelefono) {
+            System.out.print("Teléfono: ");
+            telefono = sc.nextLine();
+        }
+        return new Contacto(nombre, apellido, telefono);
     }
 }
