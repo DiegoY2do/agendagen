@@ -36,8 +36,25 @@ public class Main {
             System.out.println("\n");
             switch (opcion) {
                 case 1:
+                    System.out.print("Ingrese nombre: ");
+                    String nAdd = sc.nextLine();
+                    System.out.print("Ingrese apellido: ");
+                    String aAdd = sc.nextLine();
+                    System.out.print("Ingrese teléfono: ");
+                    String tAdd = sc.nextLine();
+                    agenda.agregarContacto(new Contacto(nAdd, aAdd, tAdd));
                     break;
                 case 2:
+                    System.out.print("Nombre a verificar: ");
+                    String nVer = sc.nextLine();
+                    System.out.print("Apellido a verificar: ");
+                    String aVer = sc.nextLine();
+                    boolean existe = agenda.existeContacto(new Contacto(nVer, aVer, ""));
+                    if (existe) {
+                        System.out.println("👉 El contacto SÍ existe en la agenda.");
+                    } else {
+                        System.out.println("👉 El contacto NO existe en la agenda.");
+                    }
                     break;
                 case 3:
                     agenda.listarContactos();
@@ -50,12 +67,32 @@ public class Main {
                     }
                     break;
                 case 5:
+                    System.out.print("Nombre del contacto a eliminar: ");
+                    String nDel = sc.nextLine();
+                    System.out.print("Apellido del contacto a eliminar: ");
+                    String aDel = sc.nextLine();
+                    agenda.eliminarContacto(new Contacto(nDel, aDel, ""));
                     break;
                 case 6:
+                    System.out.print("Nombre del contacto: ");
+                    String nMod = sc.nextLine();
+                    System.out.print("Apellido del contacto: ");
+                    String aMod = sc.nextLine();
+                    System.out.print("Nuevo teléfono: ");
+                    String tMod = sc.nextLine();
+                    agenda.modificarTelefono(nMod, aMod, tMod);
                     break;
                 case 7:
+                    if (agenda.agendaLlena()) {
+                        System.out.println("🔴 La agenda está LLENA.");
+                    } else {
+                        System.out.println("🟢 La agenda NO está llena, aún hay espacio.");
+                    }
+                    break;
                     break;
                 case 8:
+                    agenda.espaciosLibres();
+                    break;
                     break;
                 case 0:
                     System.out.println("Hasta luego.");
