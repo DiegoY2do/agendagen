@@ -9,10 +9,10 @@ public class Main {
         int opcion;
 
         // Contactos de prueba (borrar antes de entregar)
-        agenda.agregarContacto(new Contacto("Luis", "Pérez", "5512345678"));
-        agenda.agregarContacto(new Contacto("ana", "Torres", "5587654321"));
-        agenda.agregarContacto(new Contacto("Ana", "Gómez", "5511223344"));
-        agenda.agregarContacto(new Contacto("Carlos", "Ruiz", "5599887766"));
+        agenda.agregar(new Contacto("Luis", "Pérez", "5512345678"));
+        agenda.agregar(new Contacto("ana", "Torres", "5587654321"));
+        agenda.agregar(new Contacto("Ana", "Gómez", "5511223344"));
+        agenda.agregar(new Contacto("Carlos", "Ruiz", "5599887766"));
 
         do {
             System.out.println("\n--- AGENDA ---");
@@ -36,14 +36,14 @@ public class Main {
             System.out.println("\n");
             switch (opcion) {
                 case 1:
-                    agenda.agregarContacto(pedirContacto(sc, true));
+                    agenda.agregar(pedirContacto(sc, true));
                     break;
                 case 2:
-                    System.out.println(agenda.existeContacto(pedirContacto(sc, false))
+                    System.out.println(agenda.existe(pedirContacto(sc, false))
                             ? "El contacto existe." : "El contacto no existe.");
                     break;
                 case 3:
-                    agenda.listarContactos();
+                    agenda.listar();
                     break;
                 case 4:
                     try {
@@ -53,7 +53,7 @@ public class Main {
                     }
                     break;
                 case 5:
-                    agenda.eliminarContacto(pedirContacto(sc, false));
+                    agenda.eliminar(pedirContacto(sc, false));
                     break;
                 case 6:
                     System.out.println("Ingresa nombre, apellido y el NUEVO teléfono.");

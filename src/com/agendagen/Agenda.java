@@ -5,7 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
-public class Agenda {
+public class Agenda implements ICrud<Contacto> {
     private final List<Contacto> contactos;
     private final int tamanoMaximo;
 
@@ -26,26 +26,27 @@ public class Agenda {
      *
      * @param contacto
      */
-    public void agregarContacto(Contacto contacto) {
+    @Override
+    public boolean agregar(Contacto contacto) {
         if (agendaLlena()) {
             System.out.println("La agenda está llena, no se pueden añadir más contactos.");
-            return;
+            return false;
         }
 
         if (contacto == null
                 || contacto.getNombre() == null || contacto.getNombre().trim().isEmpty()
                 || contacto.getApellido() == null || contacto.getApellido().trim().isEmpty()) {
             System.out.println("El nombre y el apellido no pueden estar vacíos.");
-            return;
+            return false;
         }
 
-        if (existeContacto(contacto)) {
+        if (existe(contacto)) {
             System.out.println("El contacto " + contacto.getNombre() + " "
                     + contacto.getApellido() + " ya existe en la agenda.");
-            return;
+            return false;
         }
 
-        contactos.add(contacto);
+        return contactos.add(contacto);
 
     }
 
@@ -61,7 +62,7 @@ public class Agenda {
      */
     public void modificarTelefono(String nombre, String apellido, String numero) {
         try {
-            Contacto buscar = this.buscarContacto(nombre, apellido, "");
+            Contacto buscar = this.buscarContacto(nombre, apellido);
             contactos.get(contactos.indexOf(buscar)).setTelefono(numero);
             System.out.println("Teléfono actualizado correctamente");
         } catch(Exception ex) {
@@ -77,7 +78,8 @@ public class Agenda {
      * @param contacto
      * @return
      */
-    public boolean existeContacto(Contacto contacto) {
+    @Override
+    public boolean existe(Contacto contacto) {
         return contactos.contains(contacto);
     }
 
@@ -85,7 +87,8 @@ public class Agenda {
      * Imprime en consola todos los contactos de la agenda
      * No devuelve nada.
      */
-    public void listarContactos() {
+    @Override 
+    public void listar() {
         if (contactos.isEmpty()) {
             System.out.println("La agenda está vacía.");
             return;
@@ -104,16 +107,14 @@ public class Agenda {
 
     /**
      * Metodo para buscar un contacto especifico.
-     * Recibe cono cadenas el nombre, el apellido y el numero.
+     * Recibe cono cadenas el nombre, el apellido.
      * Devuelve el contacto si es que existe, si no dice que no (puede lanzar una excepción)
      *
      * @param nombre
      * @param apellido
-     * @param number
      * @return
      */
-
-    public Contacto buscarContacto(String nombre, String apellido, String number) throws Exception {
+    public Contacto buscarContacto(String nombre, String apellido) throws Exception {
         for (Contacto c : contactos) {
             if (c.getNombre().equalsIgnoreCase(nombre)
                     && c.getApellido().equalsIgnoreCase(apellido)) {
@@ -131,7 +132,7 @@ public class Agenda {
         System.out.print("Apellido a buscar: ");
         String apellido = sc.nextLine();
 
-        Contacto c = buscarContacto(nombre, apellido, "");
+        Contacto c = buscarContacto(nombre, apellido);
 
         System.out.println("\n");
 
@@ -150,9 +151,10 @@ public class Agenda {
      * @param contacto
      * @return
      */
-    public boolean eliminarContacto(Contacto contacto) {
+    @Override
+    public boolean eliminar(Contacto contacto) {
         try {
-            Contacto buscar = this.buscarContacto(contacto.getNombre(), contacto.getApellido(), contacto.getTelefono());
+            Contacto buscar = this.buscarContacto(contacto.getNombre(), contacto.getApellido());
             contactos.remove(buscar);
             System.out.println("Se elimino correctamente el contacto");
             return true;
@@ -168,11 +170,15 @@ public class Agenda {
      *
      * @return
      */
-
     public boolean agendaLlena() {
         return contactos.size() >= tamanoMaximo;
     }
 
+    /**
+     * Indica cuantos espacios libre hay en la agenda
+     * 
+     * @return Un numero
+     */
     public int espaciosLibres() {
         return tamanoMaximo - contactos.size();
     }
